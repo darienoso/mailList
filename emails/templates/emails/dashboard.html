@@ -4,6 +4,20 @@
 {% block titleh1 %}Dashboard{% endblock %}
 
 {% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form method="get">
+                {{ myFilter.form }}
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
 <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
         {% if messages %}
@@ -68,7 +82,7 @@
                         <td>{{u.Products}}</td>
                         <td>{{u.purchaseDate}}</td>
                         <td><a href="editarUsuario/{{u.id}}" class="btn btn-info">Editar</a></td>
-                        <td><a href="editarUsuario/{{u.id}}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
+                        <td><a href="eliminarUsuario/{{u.id}}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

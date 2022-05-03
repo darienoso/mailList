@@ -2,14 +2,19 @@ from django.shortcuts import render, redirect
 from .models import Persons
 from django.http import HttpResponse
 from .forms import usuarioForm
+from .filters import PersonFilter
 
 # Create your views here.
 
 
 def home(request):
     usuarios = Persons.objects.all()
+    myFilter = ""
     if request.method == 'GET':
         form = usuarioForm()
+        myFilter = PersonFilter(request.GET,queryset=usuarios)
+        usuarios = myFilter.qs
+
     else:
         form = usuarioForm(request.POST)
         if form.is_valid():
@@ -18,7 +23,8 @@ def home(request):
 
     contexto = {
         "users":usuarios,
-        "form": form
+        "form": form,
+        "myFilter": myFilter,
     }
     return render(request, 'emails/dashboard.html',contexto)
 
@@ -41,10 +47,16 @@ def editPerson(request, id):
 
     return render(request, 'emails/editarUsuario.html', contexto)
 
+def deletePerson(request,id):
+    usuario = Persons.objects.get(id=id)
+    usuario.delete()
+    return redirect('/dashboard')
+
+
 
 def products(request):
     return render(request, "emails/editarUsuario.html")
 
 
 def customer(request):
-    return render(request, "emails/customer.html")
+    return render(request, "emails/eliminarUsuario.html")
