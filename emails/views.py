@@ -70,3 +70,6 @@ def sendEmail(name):
     recipient_list = [user.email, ]
     send_mail( subject, message, email_from, recipient_list )
 
+def login(request):
+    return render(request, "emails/login.html")
+
