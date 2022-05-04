@@ -3,6 +3,8 @@ from .models import Persons
 from django.http import HttpResponse
 from .forms import usuarioForm
 from .filters import PersonFilter
+from django.conf import settings
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -14,7 +16,7 @@ def home(request):
         form = usuarioForm()
         myFilter = PersonFilter(request.GET,queryset=usuarios)
         usuarios = myFilter.qs
-
+        sendEmail(usuario.name)
     else:
         form = usuarioForm(request.POST)
         if form.is_valid():
@@ -60,3 +62,11 @@ def products(request):
 
 def customer(request):
     return render(request, "emails/eliminarUsuario.html")
+
+def sendEmail(name):
+    subject = 'welcome to GFG world'
+    message = f'Hi {name}, thank you for registering in geeksforgeeks.'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [user.email, ]
+    send_mail( subject, message, email_from, recipient_list )
+
