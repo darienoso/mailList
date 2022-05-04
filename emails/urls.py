@@ -7,5 +7,7 @@ urlpatterns = [
     path('customer/', views.customer),
     path('editarUsuario/<int:id>', views.editPerson),
     path('eliminarUsuario/<int:id>', views.deletePerson),
+    path('', views.login),
+
 
 ]
