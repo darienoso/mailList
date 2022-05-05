@@ -5,6 +5,8 @@ from .forms import usuarioForm
 from .filters import PersonFilter
 from django.conf import settings
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth. import logout
 
 # Create your views here.
 
@@ -70,7 +72,7 @@ def sendEmail(name):
     recipient_list = [user.email, ]
     send_mail( subject, message, email_from, recipient_list )
 
-def login(request):
-    
-    return render(request, "emails/login.html")
+def salir(request):
+    logout(reguest)
+    return redirect('/')
 
