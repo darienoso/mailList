@@ -6,11 +6,11 @@ from .filters import PersonFilter
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth. import logout
+from django.contrib.auth import logout
 
 # Create your views here.
 
-
+@login_required
 def home(request):
     usuarios = Persons.objects.all()
     myFilter = ""
@@ -18,7 +18,7 @@ def home(request):
         form = usuarioForm()
         myFilter = PersonFilter(request.GET,queryset=usuarios)
         usuarios = myFilter.qs
-        sendEmail(usuario.name)
+
     else:
         form = usuarioForm(request.POST)
         if form.is_valid():
@@ -65,14 +65,9 @@ def products(request):
 def customer(request):
     return render(request, "emails/eliminarUsuario.html")
 
-def sendEmail(name):
-    subject = 'welcome to GFG world'
-    message = f'Hi {name}, thank you for registering in geeksforgeeks.'
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = [user.email, ]
-    send_mail( subject, message, email_from, recipient_list )
+
 
 def salir(request):
-    logout(reguest)
+    logout(request)
     return redirect('/')
 
