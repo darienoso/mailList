@@ -137,5 +137,8 @@ GitHub.sublime-settings
 !.vscode/extensions.json
 .history
 
+email_py/private.py
+
 # Mac
 .DS_Store
+

@@ -5,57 +5,34 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col">
-        <div class="card card-body">
-            <form method="get">
-                {{ myFilter.form }}
-                <button type="submit" class="btn btn-primary">Search</button>
+<div class="row pt-4">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+        <div class="card-header">
+            <h3>Filtros</h3>
+        </div>
+        <div class=" card-body">
+            <form method="get" class="form-control>
+                {{ myFilter.form.as_p }}
+                <button type="submit" class="btn btn-primary">Filtrar</button>
             </form>
 
+
         </div>
 
     </div>
-</div>
 
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-dismissible alert-success">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong class="text-dark">{{ message }}</strong>
+
+
+    <div class="col-sm-12 col-md-10 col-lg-8 col-xl-9">
+
+        <div>
+            <h1>Listado de Usuarios</h1>
+             <form method="post" >{% csrf_token %}
+                <button type="submit" href="/dashboard"  name="btnSendEmails" class="btn btn-info">Enviar Correos</button>
+            </form>
         </div>
-        {% endfor %}
-        {% endif %}
-        <h2>Gestión de Usuarios</h2>
-
-
-
-        <div class="card">
-            <div class="card-body">
-                <form action="/dashboard" method="POST">{% csrf_token %}
-                    <div class="form-group">
-                        {{ form.as_p }}
-                    </div>
-<!--                    <div class="form-group">-->
-<!--                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" placeholder="Nombre"-->
-<!--                            maxlength="50" required>-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <input type="text" id="numCreditos" name="numCreditos" class="form-control" min="1" max="9"-->
-<!--                            value="1" required>-->
-<!--                    </div>-->
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
-        <h1>Listado de Usuarios</h1>
         <div class="table-responsive py-2">
+
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -66,7 +43,7 @@
                         <th>Edad</th>
                         <th>Ciudad</th>
                         <th>Productos</th>
-                        <th>Fecha de Compra</th>
+                        <th>Fecha de ultima Compra</th>
                         <th colspan="2">Opciones</th>
                     </tr>
                 </thead>
@@ -74,21 +51,26 @@
                     {% for u in users %}
                     <tr>
                         <td>{{forloop.counter}}</td>
-                        <td>{{u.id}}</td>
-                        <td>{{u.name}} {{u.lastname}}</td>
-                        <td>{{u.email}}</td>
-                        <td>{{u.age}}</td>
-                        <td>{{u.city}}</td>
-                        <td>{{u.Products}}</td>
+                        <td>{{u.Cedula}}</td>
+                        <td>{{u.Nombre}} {{u.Apellido}}</td>
+                        <td>{{u.Email}}</td>
+                        <td>{{u.Edad}}</td>
+                        <td>{{u.Ciudad}}</td>
+                        <td>{{u.producto}}</td>
                         <td>{{u.purchaseDate}}</td>
-                        <td><a href="editarUsuario/{{u.id}}" class="btn btn-info">Editar</a></td>
-                        <td><a href="eliminarUsuario/{{u.id}}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
+                        <td><a href="editarUsuario/{{u.Cedula}}" class="btn btn-info">Editar</a></td>
+                        <td><a href="eliminarUsuario/{{u.Cedula}}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+
+    </div>
     </div>
 </div>
+
+
+
 
 {% endblock %}

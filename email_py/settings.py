@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from email_py.private import myEmail, myEmpass
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -128,5 +129,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "jorge.valencia797@pascualbravo.edu.co"
-EMAIL_HOST_PASSWORD = "jmaldonado2312"
+
+# Crear archivo private.py en este paquete y poner estas variables con estos valores.
+EMAIL_HOST_USER = myEmail
+EMAIL_HOST_PASSWORD = myEmpass
