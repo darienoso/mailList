@@ -1,3 +1,4 @@
+from django.contrib.auth import views as auth_views
 """email_py URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -18,6 +19,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', auth_views.LoginView.as_view(), name='login'),
+    path('accounts/', include('django.contrib.auth.urls')),
+
     path('', include('emails.urls')),
 
 
