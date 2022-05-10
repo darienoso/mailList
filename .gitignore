@@ -139,3 +139,5 @@ GitHub.sublime-settings
 
 # Mac
 .DS_Store
+
+email_py/private.py
