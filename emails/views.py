@@ -1,22 +1,21 @@
-from django.db.models import F
+from datetime import datetime
+
+from django.db.models import F, When
 from django.shortcuts import render, redirect
-from .models import Persons, Productos
+from .models import Persons
 from django.http import HttpResponse
-from .forms import usuarioForm, productoForm
+from .forms import usuarioForm
 from .filters import PersonFilter
 from django.conf import settings
 from django.core.mail import send_mail
 
 # Create your views here.
 def home(request):
-    # usuarios = Persons.objects.all()
-    usuarios = Productos.objects.all()
-    # usuarios = Productos.objects.select_related('spersonId')
-    # usuarios = Productos.objects.filter(Persons=spersonsId)
+    usuarios = Persons.objects.all()
     myFilter = PersonFilter(request.GET, queryset=usuarios)
     usuarios = myFilter.qs
     # print(str(Sells.query))
-    print(str(usuarios.query))
+    print(str(request.GET.get('Ciudad') != ""))
 
     if request.method == 'POST':
         sendEmail(request,usuarios)
@@ -24,7 +23,6 @@ def home(request):
     contexto = {
         "users": usuarios.values(),
         "myFilter": myFilter,
-        # "sells": Sells,
     }
     return render(request, 'emails/dashboard.html', contexto)
 
@@ -43,8 +41,7 @@ def crearPerson(request):
 
 
 def editPerson(request, id):
-    usuario = Persons.objects.get(personId=id)
-    usuario = Persons.objects.get(personId=id)
+    usuario = Persons.objects.get(Cedula=id)
     if request.method == 'GET':
         form = usuarioForm(instance=usuario)
         contexto = {
@@ -63,23 +60,23 @@ def editPerson(request, id):
 
 
 def deletePerson(request, id):
-    usuario = Persons.objects.get(personId=id)
+    usuario = Persons.objects.get(Cedula=id)
     usuario.delete()
     return redirect('/dashboard')
 
-
-def products(request):
-    form = productoForm()
-    contexto = {
-        "form": form,
-    }
-    if request.method == 'POST':
-        form = productoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/dashboard')
-
-    return render(request, "emails/crearProducto.html",contexto)
+#
+# def products(request):
+#     form = productoForm()
+#     contexto = {
+#         "form": form,
+#     }
+#     if request.method == 'POST':
+#         form = productoForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('/dashboard')
+#
+#     return render(request, "emails/crearProducto.html",contexto)
 
 
 #
@@ -102,17 +99,31 @@ def products(request):
 
 
 def sendEmail(request,personas):
+
+
     print("Dentro de la funcion SendEmail")
     print("Linea 68: ", request.method)
 
     for user in personas:
-        subject = 'Soy yo'
-        message = f'Hi {user.pname}, Mensaje desde Django.'
+        subject = f'{user.Nombre} - Necesitas ver esto! '
+        message = f'{user.Ciudad},{datetime.now().date()} \n\n' \
+                  f'Hola {user.Nombre}, \n\n' \
+                  f'Cordial Saludo,\n'
+        if request.GET.get('Ciudad') is not "":
+            message += f"Aprovecha las promociones especiales que tenemos en {user.Ciudad}. \n"
+
+        if request.GET.get('start_age') is not "" or request.GET.get('final_age') is not "":
+            message += f"Encuentra todo lo que necesitas especialmente para ti, de regreso a la U \n"
+
+        if request.GET.get('start_date_min') is not "" or request.GET.get('start_date_max') is not "":
+            message += f"Te extranamos desde tu ultima Compra, te esperamos con nuevos productos. \n"
+        message += f"Los mejores productos al mejor precio, lo encuentras en un solo lugar, visitanos\n!"
+        message += f"Que tenga un feliz dia!\nAtentamente,\n\nLA CACHARRERIA UNIVERSAL S.A"
         email_from = settings.EMAIL_HOST_USER
-        recipient_list = [user.email]
-        print("Sending Emails to: ",user.email)
+        recipient_list = [user.Email]
+        print("Sending Emails to: ",user.Email)
         # send_mail(subject, message, email_from, recipient_list)
-        print("Enviado")
+        print(message)
 
 
 def login(request):
