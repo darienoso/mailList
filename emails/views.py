@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.db.models import F, When
 from django.shortcuts import render, redirect
 from .models import Persons
@@ -9,7 +11,10 @@ from .filters import PersonFilter
 from django.conf import settings
 from django.core.mail import send_mail
 
+
+
 # Create your views here.
+@login_required
 def home(request):
     usuarios = Persons.objects.all()
     myFilter = PersonFilter(request.GET, queryset=usuarios)
@@ -26,6 +31,8 @@ def home(request):
     }
     return render(request, 'emails/dashboard.html', contexto)
 
+
+@login_required
 def crearPerson(request):
     form = usuarioForm()
     contexto = {
@@ -39,7 +46,7 @@ def crearPerson(request):
 
     return render(request, 'emails/crearUsuario.html', contexto)
 
-
+@login_required
 def editPerson(request, id):
     usuario = Persons.objects.get(Cedula=id)
     if request.method == 'GET':
@@ -59,6 +66,7 @@ def editPerson(request, id):
     return render(request, 'emails/editarUsuario.html', contexto)
 
 
+@login_required
 def deletePerson(request, id):
     usuario = Persons.objects.get(Cedula=id)
     usuario.delete()
@@ -98,6 +106,7 @@ def deletePerson(request, id):
 #     return render(request, "emails/hacerVenta.html",contexto)
 
 
+@login_required
 def sendEmail(request,personas):
 
 
@@ -126,5 +135,7 @@ def sendEmail(request,personas):
         print(message)
 
 
-def login(request):
-    return render(request, "emails/login.html")
+
+def salir(request):
+    logout(request)
+    return redirect('/')

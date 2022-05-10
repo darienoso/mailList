@@ -1,7 +1,7 @@
 {% extends 'emails/main.html' %}
 
-{% block title %} Dashboard {% endblock %}
-{% block titleh1 %}Dashboard{% endblock %}
+{% block title %} Login {% endblock %}
+{% block titleh1 %}Login{% endblock %}
 
 {% block content %}
 {% csrf_token %}
@@ -17,7 +17,7 @@
     </div>
 
     <!-- Login Form -->
-    <form>
+    <form method="post">
       {% csrf_token %}
       <input type="text" id="login" class="fadeIn second" name="username" placeholder="login">
       <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
